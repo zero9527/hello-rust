@@ -1,4 +1,3 @@
-pub mod array;
 pub mod closure_capture;
 pub mod command;
 pub mod debug;
@@ -16,8 +15,6 @@ pub mod tuples;
 pub mod while_let;
 
 pub fn handle_test() {
-    array::handle_test();
-
     closure_capture::handle_test();
     command::handle_test();
     enum1::handle_test();

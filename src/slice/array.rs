@@ -23,4 +23,16 @@ pub fn handle_test() {
     analyze_slice(&xs[0..2]); // 取包含0，不包含2之间的区间
 
     // println!("{}", xs[5]);
+
+    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let slice1 = &numbers[1..4];
+    let slice2 = &numbers[..3];
+    let slice3 = &numbers[7..];
+    println!("slice1: {:?}", slice1); // slice1: [2, 3, 4]
+    println!("slice2: {:?}", slice2); // slice2: [1, 2, 3]
+    println!("slice3: {:?}", slice3); // slice3: [8, 9, 10]
+
+    for num in slice1.iter() {
+        println!("Number: {num}");
+    }
 }
