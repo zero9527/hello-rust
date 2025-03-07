@@ -8,7 +8,7 @@ pub struct Info {
 }
 
 pub struct AppState {
-    info: HashMap<String, Info>,
+    pub info: HashMap<String, Info>,
 }
 
 impl AppState {
@@ -32,7 +32,7 @@ impl AppState {
     }
 
     pub fn update(&mut self, _info: Info) -> Result<String, String> {
-        if let Some(_) = self.get((&_info.name)) {
+        if let Some(_) = self.get(&_info.name) {
             self.info
                 .entry(_info.name)
                 .and_modify(|f| f.pass = _info.pass);
