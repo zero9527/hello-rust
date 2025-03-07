@@ -1,19 +1,23 @@
-mod box1;
-mod for_iteration;
-mod hash_map;
-mod slice;
-mod struct1;
-mod study;
-mod tools;
+use actix_web::{web, App, HttpResponse, HttpServer};
 
-fn main() {
-    box1::handle_test();
+mod actix;
+use actix::{app_state::AppState, hello_name, index, info};
 
-    // study::handle_test();
-    // tools::handle_test();
-    // for_iteration::handle_test();
-
-    // struct1::handle_test();
-    // hash_map::handle_test();
-    // slice::handle_test();
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new()
+            .app_data(web::Data::new(AppState::new()).clone())
+            .service(index::handle)
+            .service(hello_name::handle)
+            .service(info::handle_get)
+            .service(info::handle_add)
+            .service(info::handle_update)
+            .service(info::handle_delete)
+            .default_service(web::to(|| HttpResponse::NotFound()))
+        // .route("/hey", web::get().to(manual_hello))
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }
