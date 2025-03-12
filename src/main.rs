@@ -1,6 +1,4 @@
-use std::sync::Mutex;
-
-use actix_web::{web, App, HttpResponse, HttpServer};
+use actix_web::{middleware::Logger, web, App, HttpResponse, HttpServer};
 
 mod actix;
 use actix::{app_state::AppState, hello_name, index, info};
@@ -9,11 +7,12 @@ use actix::{app_state::AppState, hello_name, index, info};
 async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "debug");
     env_logger::init();
+    let app_state = web::Data::new(AppState::new());
 
-    HttpServer::new(|| {
-        let app_state = Mutex::new(AppState::new());
+    HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(app_state).clone())
+            .wrap(Logger::default())
+            .app_data(app_state.clone())
             .service(index::handle)
             .service(hello_name::handle)
             .service(info::handle_get)
