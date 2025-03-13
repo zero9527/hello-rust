@@ -6,8 +6,8 @@ use crate::actix::app_state::{AppState, Info};
 async fn handle_get(name: web::Path<String>, app_state: web::Data<AppState>) -> impl Responder {
     println!("\ndata: {:?}", name);
     println!("app_state.info: {:?}", app_state.info.lock().unwrap());
-    if let Ok(Some(i)) = app_state.get(&name) {
-        return HttpResponse::Ok().body(format!("{:?}", i));
+    if let Ok(Some(info)) = app_state.get(&name) {
+        return HttpResponse::Ok().json(info);
     }
 
     HttpResponse::BadRequest().body(format!("name: {} 不存在", &name))
