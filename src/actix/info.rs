@@ -1,6 +1,6 @@
 use actix_web::{delete, get, post, web, HttpResponse, Responder};
 
-use crate::actix::app_state::{AppState, Info};
+use crate::actix::app_state::{AppState, Info, ResData};
 
 #[get("/get/info/{name}")]
 async fn handle_get(name: web::Path<String>, app_state: web::Data<AppState>) -> impl Responder {
@@ -19,7 +19,7 @@ async fn handle_add(req_body: web::Json<Info>, app_state: web::Data<AppState>) -
     if let Err(e) = app_state.add(req_body.into_inner()) {
         return HttpResponse::InternalServerError().body(e.to_string());
     }
-    HttpResponse::Ok().body("Ok")
+    HttpResponse::Ok().json(ResData { code: 0, message: "Ok".to_string() })
 }
 
 #[post("/update/info")]

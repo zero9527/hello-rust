@@ -1,6 +1,12 @@
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, sync::Mutex};
 
+#[derive(Serialize)]
+pub struct ResData {
+    pub code: i32,
+    pub message: String,
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Info {
     pub name: String,
@@ -13,9 +19,7 @@ pub struct AppState {
 
 impl AppState {
     pub fn new() -> Self {
-        AppState {
-            info: Mutex::new(HashMap::new()),
-        }
+        AppState { info: Mutex::new(HashMap::new()) }
     }
 
     pub fn get(&self, name: &String) -> Result<Option<Info>, String> {
@@ -35,10 +39,7 @@ impl AppState {
         match self.get(&_info.name) {
             Ok(Some(_)) => Err(format!("name: {} 已存在", _info.name)),
             Ok(None) => {
-                self.info
-                    .lock()
-                    .unwrap()
-                    .insert(_info.name.to_string(), _info);
+                self.info.lock().unwrap().insert(_info.name.to_string(), _info);
                 return Ok(());
             }
             Err(msg) => Err(msg),
@@ -48,11 +49,7 @@ impl AppState {
     pub fn update(&self, _info: Info) -> Result<(), String> {
         match self.get(&_info.name) {
             Ok(Some(_)) => {
-                self.info
-                    .lock()
-                    .unwrap()
-                    .entry(_info.name)
-                    .and_modify(|f| f.pass = _info.pass);
+                self.info.lock().unwrap().entry(_info.name).and_modify(|f| f.pass = _info.pass);
                 return Ok(());
             }
             Ok(None) => Err(format!("name: {} 不存在", _info.name)),
