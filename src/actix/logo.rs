@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{env::current_dir, fs};
 
 use actix_multipart::form::{tempfile::TempFile, text::Text, MultipartForm};
 use actix_web::{post, HttpResponse, Responder};
@@ -8,7 +8,7 @@ use crate::actix::app_state::ResData;
 #[derive(Debug, MultipartForm)]
 struct UploadForm {
     icon_type: Text<u8>,
-    #[multipart(limit = "100KB")]
+    #[multipart(limit = "10MB")]
     data: TempFile,
 }
 
@@ -20,13 +20,14 @@ async fn handle_update(MultipartForm(form): MultipartForm<UploadForm>) -> impl R
         3 => "small_icon".to_string(),
         _ => "".to_string(),
     };
-    println!("\n[/post/logo] icon_type: {:?}", icon_type_str);
+    println!("\nicon_type: {:?}", icon_type_str);
     if let Some(name) = form.data.file_name {
+        println!("file_name: {:?}", name);
         // 路径拼接
-        let path = Path::new("./upload").join(Path::new(&name));
-        println!("path: {:?}", path);
+        let path = current_dir().unwrap().join("upload").join(&name);
+        println!("save path: {:?}", path);
         // 保存文件
-        form.data.file.persist(path).unwrap();
+        fs::copy(form.data.file, path).unwrap();
     }
     HttpResponse::Ok().json(ResData { code: 0, message: "Ok".to_string() })
 }
