@@ -1,7 +1,9 @@
 use actix_web::{middleware::Logger, web, App, HttpResponse, HttpServer};
 
-mod actix;
-use actix::{app_state::AppState, hello_name, index, info, logo};
+mod controllers;
+use controllers::{hello_name, index, info, logo};
+mod app_state;
+use app_state::AppState;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

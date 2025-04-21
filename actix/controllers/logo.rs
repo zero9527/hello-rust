@@ -3,7 +3,7 @@ use std::{env::current_dir, fs};
 use actix_multipart::form::{tempfile::TempFile, text::Text, MultipartForm};
 use actix_web::{post, HttpResponse, Responder};
 
-use crate::actix::app_state::ResData;
+use crate::app_state::ResData;
 
 #[derive(Debug, MultipartForm)]
 struct UploadForm {

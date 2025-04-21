@@ -1,9 +1,13 @@
-use std::{env, fs::File, io::Read, path::Path};
+use std::{
+    env::{self, current_dir},
+    fs::File,
+    io::Read,
+};
 
 pub fn handle_test() {
     println!("current_dir: {:?}\n", env::current_dir().unwrap());
 
-    let file_path = Path::new("./src/study/file.rs");
+    let file_path = current_dir().unwrap().join("hello/study/file.rs");
 
     let mut s = String::new();
     let mut file = File::open(file_path).unwrap();

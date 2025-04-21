@@ -1,6 +1,6 @@
 use actix_web::{delete, get, post, web, HttpResponse, Responder};
 
-use crate::actix::app_state::{AppState, Info, ResData};
+use crate::app_state::{AppState, Info, ResData};
 
 #[get("/get/info/{name}")]
 async fn handle_get(name: web::Path<String>, app_state: web::Data<AppState>) -> impl Responder {

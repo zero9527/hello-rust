@@ -6,7 +6,7 @@ mod struct1;
 mod study;
 mod tools;
 
-fn main() -> std::io::Result<()> {
+fn main() {
     box1::handle_test();
 
     // study::handle_test();
